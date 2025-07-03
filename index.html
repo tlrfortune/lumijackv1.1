@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUMIJACK Slot Machine</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <img src="assets/images/logo.png" alt="LUMIJACK Logo" style="max-width: 300px; margin-bottom: 20px;" />
+  <div id="balance">Balance: £<span id="score">10.00</span></div>
+  <div id="stats">
+    Wins: <span id="wins">0</span> |
+    Losses: <span id="losses">0</span>
+  </div>
+  <div class="slot-machine">
+    <div class="reel-column">
+      <div class="reel"><img id="r1l1" /></div>
+      <div class="reel"><img id="r1l2" /></div>
+      <div class="reel"><img id="r1l3" /></div>
+    </div>
+    <div class="reel-column">
+      <div class="reel"><img id="r2l1" /></div>
+      <div class="reel"><img id="r2l2" /></div>
+      <div class="reel"><img id="r2l3" /></div>
+    </div>
+    <div class="reel-column">
+      <div class="reel"><img id="r3l1" /></div>
+      <div class="reel"><img id="r3l2" /></div>
+      <div class="reel"><img id="r3l3" /></div>
+    </div>
+  </div>
+  <label for="bet-select">Bet Amount:</label>
+  <select id="bet-select">
+    <option value="0.10">£0.10</option>
+    <option value="0.20">£0.20</option>
+    <option value="0.30">£0.30</option>
+    <option value="0.40">£0.40</option>
+    <option value="0.50">£0.50</option>
+    <option value="0.60">£0.60</option>
+    <option value="0.80">£0.80</option>
+    <option value="1.00" selected>£1.00</option>
+    <option value="1.50">£1.50</option>
+    <option value="2.00">£2.00</option>
+    <option value="3.00">£3.00</option>
+    <option value="4.00">£4.00</option>
+    <option value="5.00">£5.00</option>
+  </select>
+  <br/>
+  <button id="spin-btn">SPIN (£1.00)</button>
+  <button id="deposit-btn">Deposit</button>
+  <button id="reset-btn">Reset</button>
+  <div id="jackpot-popup" style="display:none;">🎉 JACKPOT! 🎉</div>
+  <script src="slot.js"></script>
+</body>
+</html>
