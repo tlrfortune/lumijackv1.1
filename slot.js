@@ -1,9 +1,14 @@
 
-// LumiJack Slot Machine Core Logic
 const symbols = ["cherry", "lemon", "grape", "bell", "seven", "diamond", "bonus"];
 const columns = 5;
 const rows = 3;
 let reels = [];
+let balance = 10.00;
+const spinCost = 0.50;
+
+function updateWallet() {
+  document.getElementById("wallet").textContent = `Balance: £${balance.toFixed(2)}`;
+}
 
 function getRandomSymbol() {
   return symbols[Math.floor(Math.random() * symbols.length)];
@@ -22,8 +27,7 @@ function generateReels() {
 
 function displayReels() {
   const container = document.querySelector('.slot-machine');
-  container.innerHTML = ''; // Clear old
-
+  container.innerHTML = '';
   reels.forEach(col => {
     const colDiv = document.createElement('div');
     colDiv.className = 'reel-column';
@@ -59,20 +63,26 @@ function showPopup(type) {
 }
 
 function spinReels() {
+  if (balance < spinCost) {
+    alert("Insufficient balance.");
+    return;
+  }
+
+  balance -= spinCost;
+  updateWallet();
+
   generateReels();
   displayReels();
-  const bonusCount = countBonusSymbols();
 
+  const bonusCount = countBonusSymbols();
   if (bonusCount === 3) showPopup(10);
   if (bonusCount >= 4) showPopup(15);
 }
 
-// Hook for spin button
 document.addEventListener("DOMContentLoaded", () => {
+  updateWallet();
   const spinBtn = document.getElementById("spinButton");
   if (spinBtn) {
     spinBtn.addEventListener("click", spinReels);
-  } else {
-    spinReels(); // Auto-spin once if no button
   }
 });
