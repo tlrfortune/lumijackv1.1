@@ -1,61 +1,78 @@
 
+// LumiJack Slot Machine Core Logic
 const symbols = ["cherry", "lemon", "grape", "bell", "seven", "diamond", "bonus"];
-let balance = 10.00, totalWins = 0, totalLosses = 0, betAmount = 1.00;
+const columns = 5;
+const rows = 3;
+let reels = [];
 
-function updateBalance() {
-  document.getElementById("score").textContent = balance.toFixed(2);
+function getRandomSymbol() {
+  return symbols[Math.floor(Math.random() * symbols.length)];
 }
-function updateStats() {
-  document.getElementById("wins").textContent = totalWins;
-  document.getElementById("losses").textContent = totalLosses;
+
+function generateReels() {
+  reels = [];
+  for (let c = 0; c < columns; c++) {
+    let col = [];
+    for (let r = 0; r < rows; r++) {
+      col.push(getRandomSymbol());
+    }
+    reels.push(col);
+  }
 }
+
+function displayReels() {
+  const container = document.querySelector('.slot-machine');
+  container.innerHTML = ''; // Clear old
+
+  reels.forEach(col => {
+    const colDiv = document.createElement('div');
+    colDiv.className = 'reel-column';
+    col.forEach(sym => {
+      const symDiv = document.createElement('div');
+      symDiv.className = 'reel';
+      const img = document.createElement('img');
+      img.src = `assets/images/${sym}.png`;
+      img.alt = sym;
+      symDiv.appendChild(img);
+      colDiv.appendChild(symDiv);
+    });
+    container.appendChild(colDiv);
+  });
+}
+
+function countBonusSymbols() {
+  let count = 0;
+  reels.forEach(col => {
+    col.forEach(sym => {
+      if (sym === 'bonus') count++;
+    });
+  });
+  return count;
+}
+
+function showPopup(type) {
+  const popup = document.getElementById(type === 10 ? "popup10" : "popup15");
+  popup.classList.add("show");
+  setTimeout(() => {
+    popup.classList.remove("show");
+  }, 4000);
+}
+
 function spinReels() {
-  if (balance < betAmount) return alert("Not enough balance!");
-  balance -= betAmount;
-  updateBalance();
+  generateReels();
+  displayReels();
+  const bonusCount = countBonusSymbols();
 
-  const rows = Array.from({ length: 3 }, () => Array.from({ length: 3 }, () => symbols[Math.floor(Math.random()*symbols.length)]));
-  const ids = ["r1","r2","r3"];
-  for (let r = 0; r < 3; r++) for (let c = 0; c < 3; c++)
-    document.getElementById(`${ids[c]}l${r+1}`).src = `assets/images/${rows[r][c]}.png`;
+  if (bonusCount === 3) showPopup(10);
+  if (bonusCount >= 4) showPopup(15);
+}
 
-  if (rows.flat().every(s => s === "bonus")) {
-    balance += 1000;
-    document.getElementById("jackpot-popup").textContent = "💰 £1,000 BONUS JACKPOT! 💰";
-    document.getElementById("jackpot-popup").style.display = "block";
-    setTimeout(() => {
-      document.getElementById("jackpot-popup").style.display = "none";
-      document.getElementById("jackpot-popup").textContent = "🎉 JACKPOT! 🎉";
-    }, 3000);
-    updateBalance();
-    return;
+// Hook for spin button
+document.addEventListener("DOMContentLoaded", () => {
+  const spinBtn = document.getElementById("spinButton");
+  if (spinBtn) {
+    spinBtn.addEventListener("click", spinReels);
+  } else {
+    spinReels(); // Auto-spin once if no button
   }
-
-  if (rows[1][0] === rows[1][1] && rows[1][1] === rows[1][2]) {
-    balance += betAmount * 5;
-    totalWins++;
-  } else totalLosses++;
-
-  updateStats(); updateBalance();
-}
-function deposit() {
-  const amt = parseFloat(prompt("Deposit amount (£):"));
-  if (!isNaN(amt) && amt > 0) { balance += amt; updateBalance(); }
-}
-function resetGame() {
-  if (confirm("Reset game?")) {
-    balance = 10; totalWins = 0; totalLosses = 0;
-    updateBalance(); updateStats();
-  }
-}
-function setBetFromDropdown() {
-  const amount = parseFloat(document.getElementById("bet-select").value);
-  if (!isNaN(amount) && amount > 0) {
-    betAmount = amount;
-    document.getElementById("spin-btn").textContent = `SPIN (£${betAmount.toFixed(2)})`;
-  }
-}
-document.getElementById("spin-btn").addEventListener("click", spinReels);
-document.getElementById("deposit-btn").addEventListener("click", deposit);
-document.getElementById("reset-btn").addEventListener("click", resetGame);
-document.getElementById("bet-select").addEventListener("change", setBetFromDropdown);
+});
