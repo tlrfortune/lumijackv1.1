@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LumiJack Slot Machine</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(-45deg, #1c1c1c, #2e2e2e, #3a3a3a, #1c1c1c);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: #fff;
+      text-align: center;
+      padding: 40px 10px;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .slot-machine {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.4);
+      border: 5px solid gold;
+      border-radius: 20px;
+      box-shadow: 0 0 25px #ff0, 0 0 60px rgba(255,255,0,0.5);
+      width: fit-content;
+      margin: auto;
+      animation: pulseGlow 2s infinite alternate;
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 15px #ff0; }
+      100% { box-shadow: 0 0 40px #ff0; }
+    }
+    .reel-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .reel img {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      background: #111;
+      border: 2px solid #ff0;
+      animation: spinFlash 0.4s ease-in-out;
+    }
+    @keyframes spinFlash {
+      0% { opacity: 0.2; transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    button {
+      margin: 20px;
+      padding: 10px 20px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 6px;
+      background: #222;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #555;
+    }
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      display: none;
+    }
+    .popup.show {
+      display: block;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1><img src="assets/images/logo_small.png" alt="LumiJack Logo" style="max-width: 200px;"></h1>
+
+  <!-- Free Spins Popups -->
+  <img id="popup10" src="assets/images/popup_10_free_spins.png" class="popup">
+  <img id="popup15" src="assets/images/popup_15_free_spins.png" class="popup">
+
+  <!-- Slot Machine Grid -->
+  <div class="slot-machine">
+    <!-- Simulated Reels for Preview -->
+    <div class="reel-column">
+      <div class="reel"><img src="assets/images/cherry.png" /></div>
+      <div class="reel"><img src="assets/images/grape.png" /></div>
+      <div class="reel"><img src="assets/images/lemon.png" /></div>
+    </div>
+    <div class="reel-column">
+      <div class="reel"><img src="assets/images/diamond.png" /></div>
+      <div class="reel"><img src="assets/images/seven.png" /></div>
+      <div class="reel"><img src="assets/images/bonus.png" /></div>
+    </div>
+    <div class="reel-column">
+      <div class="reel"><img src="assets/images/lemon.png" /></div>
+      <div class="reel"><img src="assets/images/cherry.png" /></div>
+      <div class="reel"><img src="assets/images/diamond.png" /></div>
+    </div>
+    <div class="reel-column">
+      <div class="reel"><img src="assets/images/bonus.png" /></div>
+      <div class="reel"><img src="assets/images/seven.png" /></div>
+      <div class="reel"><img src="assets/images/grape.png" /></div>
+    </div>
+    <div class="reel-column">
+      <div class="reel"><img src="assets/images/bell.png" /></div>
+      <div class="reel"><img src="assets/images/bonus.png" /></div>
+      <div class="reel"><img src="assets/images/cherry.png" /></div>
+    </div>
+  </div>
+
+  <button onclick="simulateBonus(3)">Trigger 10 Free Spins</button>
+  <button onclick="simulateBonus(4)">Trigger 15 Free Spins</button>
+
+  <script>
+    function showPopup(type) {
+      const popup = document.getElementById(type === 10 ? "popup10" : "popup15");
+      popup.classList.add("show");
+      setTimeout(() => {
+        popup.classList.remove("show");
+      }, 4000);
+    }
+
+    // Simulated logic for triggering
+    function simulateBonus(bonusCount) {
+      if (bonusCount === 3) showPopup(10);
+      if (bonusCount >= 4) showPopup(15);
+    }
+  </script>
+
+</body>
+</html>
