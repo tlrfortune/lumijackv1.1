@@ -1,0 +1,41 @@
+{
+    "columns": 5,
+    "rows": 3,
+    "symbols": [
+        "cherry",
+        "lemon",
+        "grape",
+        "bell",
+        "seven",
+        "diamond",
+        "bonus"
+    ],
+    "jackpot_conditions": {
+        "top_row_match": true,
+        "bottom_row_match": true,
+        "diagonal_match": true,
+        "full_match_bonus_round": true
+    },
+    "payout_multiplier": {
+        "cherry": 2,
+        "lemon": 2,
+        "grape": 3,
+        "bell": 5,
+        "seven": 10,
+        "diamond": 15,
+        "bonus": 20
+    },
+    "free_spin_trigger": {
+        "symbol": "bonus",
+        "triggers": [
+            {
+                "count_required": 3,
+                "free_spins_awarded": 10
+            },
+            {
+                "count_required": 4,
+                "free_spins_awarded": 15
+            }
+        ]
+    }
+}
